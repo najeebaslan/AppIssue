@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by najeeb on 28/10/2024.
+  
+*/
+
+//START Localized Application Name
+"CFBundleDisplayName" = "Dates Extensions Preventive Detention";
+//END Localized Application Name

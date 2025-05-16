@@ -1,0 +1,105 @@
+name: issue
+description: "هذا التطبيق يتيح لك اضافة المتهم وإدارة جميع بياناتة من حيث التعديل والحذف وما الى ذالك ويقوم بإظهار تنبيهات عند انتهاء الوقت المتاح للمتهم والوقت المحدد لتنبية هو الاسبوع الاول من تاريخ الإظافة المتهم  ثم بعد خمسة واربعون يوم ثم إيظا بعد خمسة واربعون يوم اخرى."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 2.1.1+3
+
+environment:
+  sdk: ^3.5.3
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
+  flutter_screenutil: ^5.9.3
+  fluttertoast: ^8.2.8
+  flutter_local_notifications: ^17.2.3 
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.2.1
+  firebase_storage: ^12.3.2
+  easy_localization: ^3.0.7
+  internet_connection_checker: ^1.0.0+1
+  get_it: ^8.0.0  
+  focused_menu: ^1.0.5
+  workmanager: ^0.5.2
+  url_launcher: ^6.3.0
+  share_plus: ^10.0.2
+  pdf: ^3.11.1
+  googleapis: ^13.2.0
+  http: ^1.2.2
+  encrypt: ^5.0.3
+  path: ^1.9.0
+  local_auth: ^2.3.0
+  shared_preferences: ^2.3.4
+  animations: ^2.0.11
+  google_sign_in: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  upgrader: ^11.2.0
+  cached_network_image: ^3.4.1
+  intl: ^0.19.0
+  fluentui_system_icons: ^1.1.259
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
+  sqflite: ^2.3.3+2
+  path_provider: ^2.1.4
+  envied: ^0.5.4+1
+  flutter_native_splash: ^2.4.2
+  lottie: ^3.3.1
+
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.13
+  envied_generator: ^0.5.4+1
+
+
+flutter:
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/
+    - assets/splash.png
+    - assets/dark_splash.png
+    - assets/images/logo.png
+    - assets/images/arabic_language.png
+    - assets/images/logo_without_background.png
+    - assets/images/onboarding_add_criminals.png
+    - assets/images/onboarding_save_your_time.png
+    - assets/images/googleDrive.png
+    - assets/images/folders.png
+    - assets/images/download_backup.png
+    - assets/images/backup_manually.png
+    - assets/images/backup_automatically.png
+    - assets/images/profile.jpg
+    - assets/translations/
+    - assets/svg/
+   
+
+
+
+
+  fonts: 
+    - family: IBM Plex Sans Arabic
+      fonts: 
+        - asset: assets/fonts/IBMPlexSansArabicRegular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabicBold.ttf
+          weight: 700
+    - family: IBM Plex Sans Arabic Medium
+      fonts: 
+        - asset: assets/fonts/IBMPlexSansArabicMedium.ttf
+          weight: 500

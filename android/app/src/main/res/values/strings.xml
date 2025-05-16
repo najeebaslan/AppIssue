@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+   <!--START Localized Application Name  -->
+    <string name="app_name">مواعيد تمديدات الحبس الاحتياطي</string>
+   <!--END Localized Application Name  -->
+
+    <string name="default_notification_channel_id" translatable="false">najeeb.aslan.issue</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <!-- [START fcm_default_icon_string] -->
+    <string name="default_notification_channel_name" translatable="true">issue</string>
+    <!-- [END fcm_default_icon_string] -->
+</resources>
