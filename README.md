@@ -20,7 +20,7 @@
   <a href='https://play.google.com/store/apps/details?id=najeeb.aslan.issue&pcampaignid=web_share'>
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="150">
 </a>
-<a href='https://apps.apple.com/ye/app/%D9%85%D9%88%D8%A7%D8%B9%D9%8A%D8%AF-%D8%A7%D9%84%D8%B3%D8%AC%D9%86%D8%A7%D8%A1/id6746951512'>
+<a href='https://apps.apple.com/ye/app/6746951512?platform=iphone'>
 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="150">
 </a>
   </p>
