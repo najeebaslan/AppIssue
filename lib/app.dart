@@ -69,32 +69,3 @@ class Issue extends StatelessWidget {
     );
   }
 }
-/* 
-1. Purpose of the Application
-Meamar is a marketplace app specialized in construction tools. It connects two types of users:
-
-- Managers: Construction professionals who list tools for rent or sale.
-- Clients: Users who browse, search, and contact tool owners for their construction needs.
-Key Points:
-
-- The app is not for the general public; users must select their role (Manager/Client) during signup.
-- All tool listings and posts are user-generated and moderated for compliance.
-- There are no in-app payments; all transactions and communications happen externally (e.g., WhatsApp, phone, SMS).
-
-
-
-
-
-
-2. Core Features
-Authentication
-Users can sign up and log in using:
-Phone number
-Email and password
-Google Auth
-Apple Auth
-Account Types
-Manager: Can add, edit, and delete tools and posts.
-Client: Can browse tools and posts, like posts, and contact tool owners.
-
- */
