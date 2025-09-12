@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:issue/core/networking/type_response.dart';
 
 import '../../core/constants/default_settings.dart';
+import '../../core/constants/error_messages_constants.dart';
 import '../../core/networking/network_info.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -60,7 +61,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
       if (signIn == null) return Failure('UnKnow Error');
       return Success(signIn);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -73,7 +74,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
       await _googleSignIn.disconnect();
       return Success(true);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -99,7 +100,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
 
       return Success(driveApi);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -120,7 +121,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
       if (response == null) return Failure('response is null');
       return Success(response.stream);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -134,7 +135,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
       await driveApiV3.files.delete(backupID);
       return Success(true);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -166,7 +167,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
         return Failure('UnKnow error when upload backup');
       }
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 
@@ -189,7 +190,7 @@ class GoogleDriveRepositoryImpl extends BaseGoogleDriveRepository {
 
       return Success(files.items ?? []);
     } catch (e) {
-      return Failure(e.toString());
+      return Failure(ErrorMessages.unknownError);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:issue/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:local_auth/local_auth.dart';
@@ -63,7 +64,9 @@ Future<void> initServiceLocator() async {
   ///* ------------------------------ Repository --------------------------*//
   getIt.registerLazySingleton(
     () => ProfileRepositoryImpl(
+      firebaseAuth: getIt<FirebaseAuth>(),
       networkInfo: getIt<NetworkInfo>(),
+      googleSignIn: getIt<GoogleSignIn>(),
       firebaseStorage: getIt<FirebaseStorage>(),
       firebaseFireStore: getIt<FirebaseFirestore>(),
     ),
@@ -100,6 +103,8 @@ Future<void> initServiceLocator() async {
   getIt.registerLazySingleton(() => FirebaseAuth.instance);
   getIt.registerLazySingleton(() => FirebaseStorage.instance);
   getIt.registerLazySingleton(() => FirebaseFirestore.instance);
+  getIt.registerLazySingleton(() => GoogleSignIn());
+
   getIt.registerLazySingleton(() => NotificationManager(getIt.get<DBHelper>()));
   getIt.registerLazySingleton(
     () => AlarmProcessor(getIt.get<NotificationManager>(), getIt.get<DBHelper>()),

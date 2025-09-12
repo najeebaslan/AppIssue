@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:issue/core/extensions/string_extension.dart';
+import 'package:issue/core/services/services_locator.dart';
 
 class ProfileModel {
   final String name;
@@ -14,8 +15,8 @@ class ProfileModel {
 
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
     return ProfileModel(
-      name: map['name'] as String,
-      email: map['email'] as String,
+      name: map['name'] ?? getIt.get<FirebaseAuth>().currentUser?.displayName,
+      email: map['email'] ?? getIt.get<FirebaseAuth>().currentUser?.email,
       profileImage: map['profileImage'],
     );
   }

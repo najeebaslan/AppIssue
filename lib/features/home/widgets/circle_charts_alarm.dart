@@ -15,6 +15,9 @@ class CircleChartsAlarm extends StatelessWidget {
   static int thirdAlarmDays = AlarmsDays.calculateLavalDays(
     AlarmLevel.third,
   );
+
+  static const double _progressCircleSize = 90;
+  static const double _backgroundCircleSize = 100;
   @override
   Widget build(BuildContext context) {
     const Color nearlyDarkBlue = Color(0xFF2633C5);
@@ -27,8 +30,8 @@ class CircleChartsAlarm extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       children: <Widget>[
         Container(
-          width: 90,
-          height: 90,
+          width: _getAdjustedCircleSize(context, isBackground: false),
+          height: _getAdjustedCircleSize(context, isBackground: false),
           margin: const EdgeInsets.only(bottom: 4, right: 5, top: 4, left: 5),
           decoration: BoxDecoration(
             color: context.isDark ? const Color(0xFF2D303F).withAlpha(100) : Colors.white,
@@ -76,10 +79,17 @@ class CircleChartsAlarm extends StatelessWidget {
             ],
             angle: ((remainingDays - thirdAlarmDays) / thirdAlarmDays * circleArea).abs(),
           ),
-          child: const SizedBox(width: 100, height: 100),
+          child: SizedBox(
+              width: _getAdjustedCircleSize(context, isBackground: true),
+              height: _getAdjustedCircleSize(context, isBackground: true)),
         ),
       ],
     );
+  }
+
+  double _getAdjustedCircleSize(BuildContext context, {required bool isBackground}) {
+    final baseSize = isBackground ? _backgroundCircleSize : _progressCircleSize;
+    return context.isTablet ? baseSize + 50.w : baseSize;
   }
 }
 

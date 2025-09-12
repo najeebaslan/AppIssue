@@ -48,24 +48,24 @@ class DefaultFirebaseOptions {
         );
     }
   }
-// Add Your android and ios FirebaseOptions here
 
-  // static const FirebaseOptions android = FirebaseOptions(
-  //   apiKey: '',
-  //   appId: '',
-  //   messagingSenderId: '',
-  //   projectId: '',
-  //   storageBucket: '',
-  // );
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+  );
 
-  // static const FirebaseOptions ios = FirebaseOptions(
-  //   apiKey: '',
-  //   appId: '',
-  //   messagingSenderId: '',
-  //   projectId: '',
-  //   storageBucket: '',
-  //   androidClientId: '',
-  //   iosClientId: '',
-  //   iosBundleId: '',
-  // );
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+    androidClientId: '',
+    iosClientId: '',
+    iosBundleId: '',
+  );
+
 }

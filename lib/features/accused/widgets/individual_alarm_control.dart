@@ -13,6 +13,7 @@ import 'package:issue/core/widgets/animations/animation_dialog.dart';
 import 'package:issue/data/models/accuse_model.dart';
 import 'package:issue/features/accused/accused_cubit/accused_cubit.dart';
 
+// Main Widget Class
 class IndividualAlarmControl extends StatelessWidget {
   final AlarmTypes alarmType;
   final bool isCompleted;
@@ -33,9 +34,37 @@ class IndividualAlarmControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String levelName = _getLevelName(alarmType);
-    final bool isAlarmCompleted = remainingDays <= 1 || isCompleted;
+    return AlarmViewModel(
+      alarmType: alarmType,
+      isCompleted: isCompleted,
+      isStopped: isStopped,
+      remainingDays: remainingDays,
+      context: context,
+      accused: accused,
+    ).buildAlarmControl();
+  }
+}
 
+// ViewModel to handle business logic
+class AlarmViewModel {
+  final AlarmTypes alarmType;
+  final bool isCompleted;
+  final bool isStopped;
+  final int remainingDays;
+  final BuildContext context;
+  final AccusedModel accused;
+  final AlarmStatusHelper _statusHelper = AlarmStatusHelper();
+
+  AlarmViewModel({
+    required this.alarmType,
+    required this.isCompleted,
+    required this.isStopped,
+    required this.remainingDays,
+    required this.context,
+    required this.accused,
+  });
+
+  Widget buildAlarmControl() {
     return AdaptiveThemeContainer(
       enableBoxShadow: false,
       margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -45,99 +74,22 @@ class IndividualAlarmControl extends StatelessWidget {
         width: 0.2,
       ),
       borderRadius: BorderRadius.circular(10.r),
-      height: 50,
+      height: 50.w,
       child: Row(
         children: [
-          _buildToggleButton(isAlarmCompleted, levelName),
+          AlarmToggleButton(viewModel: this),
           SizedBox(width: 10.w),
-          _buildLevelText(levelName),
+          AlarmLevelText(viewModel: this),
           const Spacer(),
-          _buildRemainingDaysText(),
+          AlarmRemainingDaysText(viewModel: this),
           SizedBox(width: 12.w),
-          _buildStatusIcon(),
+          AlarmStatusIcon(viewModel: this),
         ],
       ),
     );
   }
 
-  RawMaterialButton _buildToggleButton(bool isAlarmCompleted, String levelName) {
-    return RawMaterialButton(
-      constraints: BoxConstraints.tight(Size(50.w, 50.h)),
-      shape: const CircleBorder(),
-      onPressed: isAlarmCompleted
-          ? null
-          : () {
-              _showToggleDialog(levelName, isAlarmCompleted);
-            },
-      visualDensity: const VisualDensity(horizontal: -4),
-      child: Icon(
-        isAlarmCompleted ? AppIcons.pause : AppIcons.play,
-        size: 29,
-      ),
-    );
-  }
-
-  void _showToggleDialog(String levelName, bool isAlarmCompleted) {
-    final String action = isAlarmCompleted ? "enable" : "disable";
-    context.awesomeDialog(
-      color: AppColors.errorDeepColor,
-      dialogType: CustomDialogType.warning,
-      title: '${"doYouWant".tr()} ${action.tr()} ${_getOrderText(levelName)}',
-      context: context,
-      btnOkOnPress: () {
-        BlocProvider.of<AccusedCubit>(context)
-            .accuseDisableOrEnable(accused.id!, alarmType, !isAlarmCompleted);
-      },
-    );
-  }
-
-  RichText _buildLevelText(String levelName) {
-    return RichText(
-      text: TextSpan(
-        text: context.locale.isArabic ? 'level'.tr() : levelName.tr(),
-        style: context.textTheme.bodyMedium,
-        children: [
-          WidgetSpan(child: SizedBox(width: 5.w)),
-          TextSpan(text: context.locale.isArabic ? levelName.tr() : 'level'.tr()),
-        ],
-      ),
-    );
-  }
-
-  Text _buildRemainingDaysText() {
-    final bool isDone = AlarmStatusHelper().isDoneCondition(accused, alarmType);
-    return Text(
-      isStopped
-          ? "stopped".tr()
-          : isDone
-              ? 'durationCompleted'.tr()
-              : "${"remaining".tr()} ${_getDayText(remainingDays)}",
-      textAlign: TextAlign.center,
-      style: context.textTheme.bodyMedium?.copyWith(
-        color: isStopped ? AppColors.errorDeepColor : _getStatusColor(),
-      ),
-    );
-  }
-
-  Color _getStatusColor() {
-    return (alarmType == AlarmTypes.firstAlarm
-                ? accused.firstAlarm == 1
-                : alarmType == AlarmTypes.nextAlarm
-                    ? accused.nextAlarm == 1
-                    : accused.thirdAlert == 1) ||
-            accused.isCompleted == 1 ||
-            AlarmStatusHelper().calculateRemainingDaysToThirdAlarm(accused) == 0
-        ? AppColors.successColor
-        : context.textTheme.bodyMedium!.color!;
-  }
-
-  Icon _buildStatusIcon() {
-    return AlarmStatusHelper().isDoneCondition(accused, alarmType)
-        ? Icon(Icons.check_circle, size: defaultIconSize.w, color: AppColors.successColor)
-        : const Icon(AppIcons.back);
-  }
-
-  String _getLevelName(AlarmTypes alarmType) {
+  String get levelName {
     switch (alarmType) {
       case AlarmTypes.firstAlarm:
         return 'first';
@@ -145,30 +97,165 @@ class IndividualAlarmControl extends StatelessWidget {
         return 'second';
       case AlarmTypes.thirdAlert:
         return 'third';
-      default:
+      case AlarmTypes.isCompleted:
         return '';
     }
   }
 
-  String _getOrderText(String levelName) {
-    return context.locale.isArabic
-        ? "${"notice".tr()} ${levelName.tr()}"
-        : "${levelName.tr()} ${"notice".tr()}";
+  bool get isAlarmCompleted => remainingDays <= 1 || isCompleted;
+  bool get isDone =>
+      _statusHelper.isDoneCondition(accused, alarmType) ||
+      _statusHelper.calculateRemainingDaysToThirdAlarm(accused) == 0 ||
+      remainingDays == 0;
+
+  Color get statusColor {
+    final isActive = (alarmType == AlarmTypes.firstAlarm
+            ? accused.firstAlarm == 1 &&
+                _statusHelper.calculateRemainingDaysToFirstAlarm(accused) == 0
+            : alarmType == AlarmTypes.nextAlarm
+                ? accused.nextAlarm == 1 &&
+                    _statusHelper.calculateRemainingDaysToSecondAlarm(accused) == 0
+                : accused.thirdAlert == 1 &&
+                    _statusHelper.calculateRemainingDaysToThirdAlarm(accused) == 0) ||
+        accused.isCompleted == 1 ||
+        remainingDays == 0 ||
+        _statusHelper.calculateRemainingDaysToThirdAlarm(accused) == 0;
+
+    return isActive ? AppColors.successColor : context.textTheme.bodyMedium!.color!;
   }
 
-  String _getDayText(int remainingDays) {
+  String get dayText {
     if (remainingDays == 1) return "day".tr();
     if (remainingDays <= 10) return '$remainingDays ${"days".tr()}';
     return '$remainingDays ${"day".tr()}';
   }
+
+  String get orderText {
+    return context.locale.isArabic
+        ? "${"notice".tr()} ${levelName.tr()}"
+        : "${levelName.tr()} ${"notice".tr()}";
+  }
 }
 
+// Toggle Button Component
+class AlarmToggleButton extends StatelessWidget {
+  final AlarmViewModel viewModel;
+
+  const AlarmToggleButton({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      constraints: BoxConstraints.tight(Size(50.w, 50.h)),
+      shape: const CircleBorder(),
+      onPressed: viewModel.isAlarmCompleted ? null : _handleToggle,
+      visualDensity: const VisualDensity(horizontal: -4),
+      child: Icon(
+        viewModel.isAlarmCompleted ? AppIcons.pause : AppIcons.play,
+        size: 29.w,
+      ),
+    );
+  }
+
+  void _handleToggle() {
+    final action = viewModel.isAlarmCompleted ? "enable" : "disable";
+    viewModel.context.awesomeDialog(
+      color: AppColors.errorDeepColor,
+      dialogType: CustomDialogType.warning,
+      title: '${"doYouWant".tr()} ${action.tr()} ${viewModel.orderText}',
+      context: viewModel.context,
+      btnOkOnPress: () {
+        BlocProvider.of<AccusedCubit>(viewModel.context).accuseDisableOrEnable(
+          viewModel.accused.id!,
+          viewModel.alarmType,
+          !viewModel.isAlarmCompleted,
+        );
+      },
+    );
+  }
+}
+
+// Level Text Component
+class AlarmLevelText extends StatelessWidget {
+  final AlarmViewModel viewModel;
+
+  const AlarmLevelText({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        text: viewModel.context.locale.isArabic ? 'level'.tr() : viewModel.levelName.tr(),
+        style: viewModel.context.textTheme.bodyMedium,
+        children: [
+          WidgetSpan(child: SizedBox(width: 5.w)),
+          TextSpan(
+            text: viewModel.context.locale.isArabic ? viewModel.levelName.tr() : 'level'.tr(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Remaining Days Text Component
+class AlarmRemainingDaysText extends StatelessWidget {
+  final AlarmViewModel viewModel;
+
+  const AlarmRemainingDaysText({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    final (text, color) = _getTextAndColor();
+
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: viewModel.context.textTheme.bodyMedium?.copyWith(color: color),
+    );
+  }
+
+  (String, Color) _getTextAndColor() {
+    if (viewModel.isStopped || viewModel.isCompleted) {
+      return ("stopped".tr(), AppColors.errorDeepColor);
+    }
+    if (viewModel.isDone) {
+      return ('durationCompleted'.tr(), AppColors.successColor);
+    }
+    return ("${"remaining".tr()} ${viewModel.dayText}", viewModel.statusColor);
+  }
+}
+
+// Status Icon Component
+class AlarmStatusIcon extends StatelessWidget {
+  final AlarmViewModel viewModel;
+
+  const AlarmStatusIcon({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      _getIcon(),
+      size: defaultIconSize.w,
+      color: viewModel.isStopped || viewModel.isCompleted ? Colors.red : viewModel.statusColor,
+    );
+  }
+
+  IconData _getIcon() {
+    if (viewModel.isDone || viewModel.remainingDays == 0) {
+      return viewModel.accused.isCompleted == 1 ? Icons.cancel : Icons.check_circle;
+    }
+    return AppIcons.back;
+  }
+}
+
+// Helper Class
 class AlarmStatusHelper {
   bool isDoneCondition(AccusedModel accused, AlarmTypes alarmType) {
     return alarmType == AlarmTypes.firstAlarm
-        ? accused.firstAlarm == 1
+        ? accused.firstAlarm == 1 && calculateRemainingDaysToFirstAlarm(accused) == 0
         : alarmType == AlarmTypes.nextAlarm
-            ? accused.nextAlarm == 1
+            ? accused.nextAlarm == 1 && calculateRemainingDaysToSecondAlarm(accused) == 0
             : accused.thirdAlert == 1 && calculateRemainingDaysToThirdAlarm(accused) == 0;
   }
 
@@ -177,7 +264,18 @@ class AlarmStatusHelper {
   int calculateRemainingDaysToThirdAlarm(AccusedModel accused) {
     final DateTime alarmDate = DateTime.parse(accused.date!)
         .add(Duration(days: AlarmsDays.calculateLavalDays(AlarmLevel.third)));
+    return DateTime.now().getRemainingDays(time: alarmDate);
+  }
 
+  int calculateRemainingDaysToSecondAlarm(AccusedModel accused) {
+    final DateTime alarmDate = DateTime.parse(accused.date!)
+        .add(Duration(days: AlarmsDays.calculateLavalDays(AlarmLevel.next)));
+    return DateTime.now().getRemainingDays(time: alarmDate);
+  }
+
+  int calculateRemainingDaysToFirstAlarm(AccusedModel accused) {
+    final DateTime alarmDate = DateTime.parse(accused.date!)
+        .add(Duration(days: AlarmsDays.calculateLavalDays(AlarmLevel.next)));
     return DateTime.now().getRemainingDays(time: alarmDate);
   }
 }

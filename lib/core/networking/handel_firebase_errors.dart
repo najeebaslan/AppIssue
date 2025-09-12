@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:issue/core/helpers/helper_user.dart';
 import 'package:issue/core/services/services_locator.dart';
 
+import '../constants/error_messages_constants.dart';
+
 class FirebaseErrorHandler {
   static String filterError(errorCode) {
     switch (errorCode is FirebaseAuthException ? errorCode.code : errorCode) {
@@ -69,7 +71,7 @@ class FirebaseErrorHandler {
           en: 'Invalid email',
         );
       default:
-        return errorCode.toString();
+        return ErrorMessages.unknownError;
     }
   }
 

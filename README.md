@@ -139,7 +139,7 @@ This application allows you to add the accused and manage all his data in terms 
 
 ## Technologies Used
 
-  - Frontend: Flutter(version: 3.24.3,Channel stable)
+  - Frontend: Flutter(version: 3.29.2,Channel stable)
  
   - Database: Sqflite,cloud_firestore,firebase_storage
   - Authentication: Firebase_auth,Google_sign_in,ign_in_with_apple
@@ -228,7 +228,7 @@ completionHandler(.alert) // shows banner even if app is in foreground
 ```
 
 For more information open this link
-[here](https://github.com/fluttercommunity/flutter_workmanager/blob/main/IOS_SETUP.md)
+[here](https://docs.page/fluttercommunity/flutter_workmanager/quickstart)
 
 - 4- Add this code in ios/Runner/Info.plist
 ``` 
@@ -355,13 +355,13 @@ dart run build_runner build --delete-conflicting-outputs
 
 ```console
 Doctor summary (to see all details, run flutter doctor -v):
-[✓] Flutter (Channel stable, 3.24.3, on macOS 14.5 23F79 darwin-arm64, locale en-YE)
-[✓] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
-[✓] Xcode - develop for iOS and macOS (Xcode 16.0)
+[✓] Flutter (Channel stable, 3.29.2, on macOS 14.5 23F79 darwin-arm64, locale en-YE)
+[✓] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+[✓] Xcode - develop for iOS and macOS (Xcode 16.2)
 [✓] Chrome - develop for the web
-[✓] Android Studio (version 2022.3)
-[✓] VS Code (version 1.94.2)
-[✓] Connected device (4 available)
+[✓] Android Studio (version 2025.1)
+[✓] VS Code (version 1.103.2)
+[✓] Connected device (3 available)
 [✓] Network resources
 
 • No issues found!

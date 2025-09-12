@@ -56,7 +56,7 @@ class LaunchUri {
   }
 
   Future<void> launchAppleStore() async {
-    String uri = "https://apps.apple.com/app/idYOUR_CLIENT_APP_ID";
+    String uri = "https://apps.apple.com/us/app/6746951512";
     if (await canLaunchUrl(Uri.parse(uri))) {
       await launchUrl(Uri.parse(uri));
     } else {

@@ -90,7 +90,7 @@ class FilterAppBar extends StatelessWidget implements PreferredSizeWidget {
         constraints: BoxConstraints.tight(Size(20.w, 20.h)),
         child: Icon(
           AppIcons.sort,
-          size: defaultIconSize - 4,
+          size: (defaultIconSize - 2).w,
           color: context.customColors!.blackAndWhite?.withValues(alpha: 0.7),
         ),
       ),
@@ -114,7 +114,7 @@ class FilterAppBar extends StatelessWidget implements PreferredSizeWidget {
         constraints: BoxConstraints.tight(Size(40.w, 40.h)),
         child: Icon(
           AppIcons.filter,
-          size: defaultIconSize,
+          size: defaultIconSize.w,
           color: context.customColors!.blackAndWhite?.withValues(alpha: 0.7),
         ),
       ),

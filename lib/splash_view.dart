@@ -20,7 +20,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  double logoOpacity = 0.0;
   final _localAuth = LocalAuthService(getIt.get<LocalAuthentication>());
   @override
   void initState() {

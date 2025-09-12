@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:issue/core/extensions/context_extension.dart';
-import 'package:issue/core/widgets/not_found_data.dart';
+import 'package:issue/core/extensions/string_extension.dart';
+import 'package:issue/core/helpers/helper_user.dart';
 
 import '../../../../core/services/services_locator.dart';
 import '../../../../core/widgets/adaptive_them_container.dart';
 import '../../../../core/widgets/image/select_image_cubit/select_image_cubit.dart';
+import '../../../../core/widgets/not_found_data.dart';
 import '../../../../core/widgets/shimmer.dart';
 import '../../../../data/models/profile_model.dart';
 import '../../../accused/accused_cubit/accused_cubit.dart';
@@ -40,12 +43,24 @@ class ProfileBlocConsumer extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is SuccessGetProfileState) {
+              if (state.profileModel.profileImage?.isEmptyOrNull==false &&
+                  getIt.get<UserHelper>().getImageUri().isEmptyOrNull) {
+                getIt.get<UserHelper>().saveImageUri(state.profileModel.profileImage!);
+                getIt.get<UserHelper>().saveUsername(state.profileModel.name);
+
+                context.read<AccusedCubit>().onRefreshProfile();
+              }
               return child(state.profileModel);
             }
             if (state is LoadingGetProfileState) {
               return const LoadingWidget();
             }
             if (state is ErrorGetProfileState) {
+              if (context.read<ProfileCubit>().isSignInUsingApple) {
+                return child(
+                  ProfileModel(name: 'anonymous'.tr(), email: getIt.get<UserHelper>().getEmail()),
+                );
+              }
               return NotFoundData(error: state.error);
             }
             return const SizedBox.shrink();

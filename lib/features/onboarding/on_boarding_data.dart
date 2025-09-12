@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../core/constants/assets_constants.dart';
 
 class OnBoardingData {
@@ -12,11 +14,12 @@ class OnBoardingData {
       title: 'saveYourTime',
       description: 'saveYourTimeSubtitle',
     ),
-    const OnBoardingModel(
+    OnBoardingModel(
       image: ImagesConstants.onboardingAutoBackups,
       title: 'autoBackups',
-      description: 'autoBackupsSubtitle',
+      description: Platform.isIOS ? "autoBackupsSubtitleIos" : 'autoBackupsSubtitle',
     ),
+    //يتيح لك النسخ الاحتياطي التلقائي حفظ بياناتك على فترات زمنية مجدولة دون الحاجة إلى اتخاذ أي إجراء منك.
     const OnBoardingModel(
       image: ImagesConstants.onboardingNotifications,
       title: 'onboardingNotifications',

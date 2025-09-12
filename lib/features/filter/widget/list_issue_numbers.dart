@@ -35,7 +35,7 @@ class _ListIssueNumbersState extends State<ListIssueNumbers> {
         valueListenable: _selectedIndex,
         builder: (context, selectedIndex, child) {
           return Row(
-            spacing: 2.w,
+            spacing: context.isTablet ? 15.w : 2.w,
             children: List.generate(
               listAccused.length,
               (index) {

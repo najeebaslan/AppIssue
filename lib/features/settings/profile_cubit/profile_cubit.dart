@@ -72,9 +72,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  void deleteMyAccount({String? imageUri, required String password}) async {
+  void deleteMyAccount({String? imageUri, String? password}) async {
     emit(LoadingDeleteAccountState());
-    final response = await profileRepository.deleteMyAccount(imageUri, password);
+
+    final response = await profileRepository.deleteMyAccount(
+        isProfileImageEmpty(imageUri) ? null : imageUri,
+        isSignInUsingGoogle || isSignInUsingApple ? null : password);
     if (response is Success) {
       if (!isClosed) {
         emit(SuccessDeleteAccountState());
@@ -86,11 +89,22 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  bool isProfileImageEmpty(String? imageUri) {
+    bool isImageEmpty = imageUri.isEmptyOrNull && imageUri?.startsWith('http') == true ||
+        imageUri?.startsWith('https') == true;
+    return isImageEmpty;
+  }
+
   void refreshProfileView() => emit(RefreshProfileState());
 
   bool get isSignInUsingGoogle {
     final currentUser = getIt.get<FirebaseAuth>().currentUser;
     return currentUser?.providerData[0].providerId == 'google.com';
+  }
+
+  bool get isSignInUsingApple {
+    final currentUser = getIt.get<FirebaseAuth>().currentUser;
+    return currentUser?.providerData[0].providerId == 'apple.com';
   }
 
   String adaptiveImageUri() {

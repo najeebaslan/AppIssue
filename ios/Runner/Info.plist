@@ -14,8 +14,7 @@
 			<string>task-identifier</string>
 			<string>najeeb.aslan.issue0</string>
 			<!-- First task at 8:00 AM -->
-			<string>najeeb.aslan.issue1</string>
-			<!-- Second task at 8:00 PM -->
+		
 		</array>
 		<!-- End Work manager -->
 		<!-- START google_signin_google_sign_in -->

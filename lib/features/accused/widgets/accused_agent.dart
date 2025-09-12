@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:issue/core/constants/app_icons.dart';
 import 'package:issue/core/extensions/context_extension.dart';
+import 'package:issue/core/theme/theme.dart';
 
 import '../../../core/services/launch_uri.dart';
 import '../../../core/widgets/adaptive_them_container.dart';
@@ -22,13 +23,13 @@ class AccusedAgent extends StatelessWidget {
     return _containerWithBorder(
       context: context,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('accusedAgent'.tr(), style: context.textTheme.bodyLarge),
           const Spacer(),
           _buildAgentButton(AppIcons.messageSMS, () {
             LaunchUri().sendSMS(accused.phoneNu.toString());
           }),
+          if (context.isTablet) SizedBox(width: 10.w),
           _buildAgentButton(AppIcons.call, () {
             LaunchUri().makePhoneCall(accused.phoneNu.toString());
           }),
@@ -40,6 +41,7 @@ class AccusedAgent extends StatelessWidget {
   Widget _containerWithBorder({required Widget child, required BuildContext context}) {
     return AdaptiveThemeContainer(
       enableBoxShadow: false,
+      height: 50.w,
       margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       border: Border.all(
@@ -57,7 +59,7 @@ class AccusedAgent extends StatelessWidget {
       constraints: BoxConstraints.tightFor(height: 30.h, width: 30.w),
       shape: const CircleBorder(),
       padding: EdgeInsets.zero,
-      child: Icon(icon, size: 25),
+      child: Icon(icon, size: defaultIconSize.w),
     );
   }
 }

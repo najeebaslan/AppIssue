@@ -33,9 +33,9 @@ class ChartCircleAlarms extends StatelessWidget {
           enableBoxShadow: false,
           margin: EdgeInsets.symmetric(
             horizontal: 10.w,
-            vertical: 10.h,
+            vertical: 10.w,
           ),
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
           border: Border.all(
             color: context.customColors!.blackAndWhite!.withValues(alpha: .5),
             width: 0.2,

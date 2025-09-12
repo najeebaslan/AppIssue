@@ -42,7 +42,7 @@ ThemeData lightTheme() => ThemeData(
         ),
         backgroundColor: Colors.white,
       ),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -299,7 +299,7 @@ ThemeData darkTheme() => ThemeData(
         ),
         backgroundColor: const Color(0xff1B2349),
       ),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),

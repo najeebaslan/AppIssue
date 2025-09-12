@@ -35,9 +35,7 @@ class FilterBodyContent extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: defaultPadding.w,
-            ),
+            padding: EdgeInsets.only(right: defaultPadding.w, left: defaultPadding.w, top: 5.w),
             child: const ListIssueNumbers(),
           ),
           Expanded(

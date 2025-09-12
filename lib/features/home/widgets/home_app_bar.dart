@@ -51,7 +51,7 @@ class HomeAppBar extends StatelessWidget {
       snap: true,
       expandedHeight: 12.1,
       centerTitle: false,
-      toolbarHeight: kToolbarHeight,
+      toolbarHeight: context.isTablet ? kToolbarHeight.w : kToolbarHeight,
       actions: _buildAppBarActions(context, imageUri),
     );
   }
@@ -140,11 +140,16 @@ class HomeAppBar extends StatelessWidget {
         constraints: BoxConstraints.tightFor(height: 30.h, width: 30.w),
         shape: const CircleBorder(),
         padding: EdgeInsets.zero,
-        child: Icon(icon,
-            color: Colors.grey[700],
-            size: defaultIconSize + (icon == AppIcons.notificationBadge ? 1 : 0)),
+        child: Icon(icon, color: Colors.grey[700], size: _getIconSize(icon, context)),
       ),
     );
+  }
+
+  double _getIconSize(IconData icon, BuildContext context) {
+    if (context.isTablet) {
+      return defaultIconSize.w + (icon == AppIcons.notificationBadge ? 2 : 0);
+    }
+    return defaultIconSize + (icon == AppIcons.notificationBadge ? 1 : 0);
   }
 
   AspectRatio _buildImageProfile(BuildContext context, String imageUri,

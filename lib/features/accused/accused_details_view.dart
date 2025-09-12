@@ -16,8 +16,8 @@ import '../../data/models/accuse_model.dart';
 import '../home/widgets/accused_details_card_content.dart';
 import '../home/widgets/base_hero_flip_animation.dart';
 import 'widgets/accused_agent.dart';
-import 'widgets/chart_circle_alarms.dart';
 import 'widgets/alarm_control_panel.dart';
+import 'widgets/chart_circle_alarms.dart';
 import 'widgets/popup_menu_details_accused.dart';
 
 class AccusedDetailsView extends StatefulWidget {
@@ -187,11 +187,14 @@ class _AccusedDetailsViewState extends State<AccusedDetailsView> {
         width: 0.2,
       ),
       borderRadius: BorderRadius.circular(10.r),
-      height: 50,
+      height: 50.w,
       width: double.infinity,
       child: Row(
         children: [
-          const Icon(AppIcons.notepad),
+          Icon(
+            AppIcons.notepad,
+            size: defaultIconSize.w,
+          ),
           SizedBox(width: 12.w),
           Text(
             accused.note.validate(),

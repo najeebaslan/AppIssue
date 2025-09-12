@@ -92,23 +92,24 @@ class BottomSheetContent extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: defaultPadding.w),
           child: SizedBox(
             height: maxHeight,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: defaultPadding.h,
+            width: context.width,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: defaultPadding.h,
+                    ),
+                    child: Center(child: _HeaderBottomSheet()),
                   ),
-                  child: Center(child: _HeaderBottomSheet()),
-                ),
-                _CloseIconButton(),
-                if (headerTitle != null && enableDivider == true) const BaseDivider(),
-                if (headerTitle != null)
-                  centerTitle ? Center(child: _titleText(context)) : _titleText(context),
-                SizedBox(height: 10.h),
-                const Spacer(),
-                child,
-                const Spacer(),
-              ],
+                  _CloseIconButton(),
+                  if (headerTitle != null && enableDivider == true) const BaseDivider(),
+                  if (headerTitle != null)
+                    centerTitle ? Center(child: _titleText(context)) : _titleText(context),
+                  SizedBox(height: 10.h),
+                  child,
+                ],
+              ),
             ),
           ),
         );

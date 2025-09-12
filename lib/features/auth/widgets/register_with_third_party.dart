@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,11 +36,11 @@ class RegisterWithThirdParty extends StatelessWidget {
           ],
         ),
         SizedBox(height: 20.h),
-        Row(
-          children: [
-            Expanded(child: continueWithGoogle(context)),
-          ],
-        ),
+        continueWithGoogle(context),
+        if (Platform.isIOS) ...[
+          SizedBox(height: 20.h),
+          continueWithApple(context),
+        ]
       ],
     );
   }
@@ -57,6 +59,7 @@ class RegisterWithThirdParty extends StatelessWidget {
           horizontal: 20.w,
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
               ImagesConstants.googleLogo,
@@ -66,6 +69,38 @@ class RegisterWithThirdParty extends StatelessWidget {
             SizedBox(width: 10.w),
             Text(
               'continue_with_google'.tr(),
+              style: context.textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget continueWithApple(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+            context.isDark ? const Color(0xff1B2349) : Colors.grey.withValues(alpha: 0.1),
+        shape: StadiumBorder(side: BorderSide(color: Colors.grey.withValues(alpha: 0.15))),
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+      ),
+      onPressed: onTapApple,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              ImagesConstants.appleLogo,
+              height: 30.h,
+              width: 30.w,
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              'continue_with_apple'.tr(),
               style: context.textTheme.bodyLarge,
             ),
           ],

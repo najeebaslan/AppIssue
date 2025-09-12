@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:issue/core/networking/type_response.dart';
 import 'package:issue/core/services/services_locator.dart';
 
-class UploadFiles {
+class FileService {
   final FirebaseStorage _storage = getIt.get<FirebaseStorage>();
   SocketException noInternet = SocketException('noInternet'.tr());
   Duration durationTimeOut = const Duration(minutes: 3);
@@ -32,6 +32,18 @@ class UploadFiles {
     } catch (error) {
       debugPrint(error.toString());
       return Failure('Unknown error check image size or quality');
+    }
+  }
+
+  Future<ResponseResult<String, bool>> deleteFile(String url) async {
+    try {
+      await getIt.get<FirebaseStorage>().refFromURL(url).delete();
+      debugPrint('Deleted successfully');
+
+      return Success(true);
+    } catch (e) {
+      String messageError = 'Error deleting db from cloud: $e';
+      return Failure(messageError);
     }
   }
 }

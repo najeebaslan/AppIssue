@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,8 +27,8 @@ class SelectBackupMethod extends StatefulWidget {
 
 class _SelectBackupMethodState extends State<SelectBackupMethod> {
   List<String> descriptionMethods = [
-    'automaticBackupDescription',
-    'manualBackupDescription',
+    Platform.isIOS ? 'automaticBackupDescriptionIos' : 'automaticBackupDescription',
+    Platform.isIOS ? 'manualBackupDescriptionIos' : 'manualBackupDescription',
   ];
   static List<ListBackUpItems> listItems = [
     ListBackUpItems(

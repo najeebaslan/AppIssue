@@ -151,7 +151,7 @@ class UserHelper implements BaseHelperUser {
 
   @override
   String getImageUri() {
-    return HelperSharedPreferences.getString(_keyAppImageUri);
+    return HelperSharedPreferences.getString(_keyAppImageUri, defValue: '');
   }
 
   @override

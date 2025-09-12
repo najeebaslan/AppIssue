@@ -26,7 +26,7 @@ class TaskScheduler {
   /// at 8:00 AM, 2:00 PM, and 8:00 PM of every days
   /// This work with [IOS]
   void _scheduleEventThreeTimesPerDayIOS(String userId) {
-    const iOSBackgroundAppRefresh = "najeeb.aslan.issue";
+    const iOSBackgroundAppRefresh = "najeeb.aslan.issue0";
     final now = DateTime.now();
     final startOfDay = DateTime(now.year, now.month, now.day);
     final taskIntervals = [
@@ -36,7 +36,7 @@ class TaskScheduler {
     for (int i = 0; i < taskIntervals.length; i++) {
       final taskTime = startOfDay.add(taskIntervals[i]);
       Workmanager().registerPeriodicTask(
-        "$iOSBackgroundAppRefresh$i", // A unique name for the task
+        iOSBackgroundAppRefresh, // A unique name for the task
         '${userId}Tag$i', // A unique tag for the task
         frequency: const Duration(days: 1), // Repeat the task every day
         initialDelay: taskTime.difference(now), // Delay before the first execution of the task
@@ -86,7 +86,7 @@ class TaskScheduler {
       simpleTaskId,
       simpleTaskId,
       frequency: const Duration(minutes: 15),
-      initialDelay: const Duration(seconds: 1),
+      initialDelay: const Duration(seconds: 10),
       existingWorkPolicy: ExistingWorkPolicy.replace,
       constraints: _getDefaultConstraints(),
     );

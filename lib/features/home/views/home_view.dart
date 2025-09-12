@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Listen for locale changes
+    // Listen for Localization changes
     final newLocale = EasyLocalization.of(context)!.locale;
     if (context.locale != newLocale) {
       setState(() {});

@@ -91,7 +91,8 @@ class CustomTextField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       style: textFieldStyle ?? context.textTheme.bodyMedium,
       decoration: InputDecoration(
-        contentPadding: context.isTablet ? null : padding ?? EdgeInsets.symmetric(vertical: 13.h),
+        contentPadding:
+            context.width >= 600 ? null : padding ?? EdgeInsets.symmetric(vertical: 13.h),
         counterText: '',
         fillColor: fillColor ??
             (context.isDark ? const Color(0xff1B2349) : Colors.grey.withValues(alpha: 0.1)),

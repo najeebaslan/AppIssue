@@ -6,8 +6,10 @@ import 'package:issue/core/helpers/helper_user.dart';
 import 'package:issue/core/utils/validate.dart';
 import 'package:issue/core/widgets/custom_toast.dart';
 
+import '../../../core/constants/error_messages_constants.dart';
 import '../../../core/helpers/shared_prefs_service.dart';
 import '../../../core/networking/type_response.dart';
+import '../../../core/utils/enums.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 part 'auth_state.dart';
@@ -45,7 +47,11 @@ class AuthCubit extends Cubit<AuthState> {
       ]);
       emit(SignInSuccess());
     } else {
-      emit(SignInError(response.failure.validate()));
+      if (response.failure == AuthFailuresEnum.noInternet) {
+        emit(SignInError(ErrorMessages.noInternetError));
+      } else {
+        emit(SignInError(ErrorMessages.unknownError));
+      }
     }
   }
 
@@ -97,12 +103,18 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  //TODO: implementation apple integration
   Future<void> signInWithApple() async {
     emit(SignInLoading());
 
     final response = await authRepository.signInWithApple();
     if (response is Success) {
+      final user = response.success;
+
+      await userHelper.saveUsername(user?.name ?? '');
+      await userHelper.saveImageUri(user?.profileImage ?? '');
+      await userHelper.saveEmail(user?.email ?? '');
+      await userHelper.saveIsUserSyncAccount(true);
+      emit(RegisterWithGoogleSuccess());
     } else {
       emit(RegisterWithGoogleError(response.failure.validate()));
     }

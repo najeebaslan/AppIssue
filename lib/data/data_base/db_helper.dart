@@ -6,6 +6,7 @@ import 'package:issue/core/extensions/iterable_extension.dart';
 import 'package:issue/core/extensions/string_extension.dart';
 import 'package:issue/core/networking/type_response.dart';
 import 'package:issue/data/models/accuse_model.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/services/encryption_service.dart';
@@ -29,7 +30,9 @@ class DBHelper {
   }
 
   Future<Database> _initDB() async {
-    String path = '${await getDatabasesPath()}Issue.db';
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'Issue.db');
+
     return await openDatabase(
       path,
       version: _version,

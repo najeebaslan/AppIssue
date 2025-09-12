@@ -19,7 +19,7 @@ extension ContextExtension<T> on BuildContext {
   EdgeInsets get padding => MediaQuery.paddingOf(this);
   double get width => mediaQuerySize.width;
   bool get isSmallDevice => height < 600;
-  bool get isTablet => width >= 600;
+  bool get isTablet => mediaQuerySize.width < 1100 && mediaQuerySize.width >= 650;
   bool get isIOS => Theme.of(this).platform == TargetPlatform.iOS;
 
   bool get isDark => Theme.of(this).brightness == Brightness.dark;

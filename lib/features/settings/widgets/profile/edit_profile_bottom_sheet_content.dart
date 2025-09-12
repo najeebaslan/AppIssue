@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/extensions/context_extension.dart';
 import '../../../../core/extensions/string_extension.dart';
+import '../../../../core/helpers/shared_prefs_service.dart';
 import '../../../../core/router/routes_constants.dart';
 import '../../../../core/services/services_locator.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -87,11 +88,13 @@ class _EditProfileBottomSheetContentState extends State<EditProfileBottomSheetCo
               SizedBox(height: 5.h),
               _buildUsernameField(),
               SizedBox(height: 10.h),
-              Text('password'.tr(), style: context.textTheme.bodyLarge),
-              SizedBox(height: 5.h),
-              _buildForgotPassword(),
+              if (isNotSigninWithThirdParty(profileCubit)) ...[
+                Text('password'.tr(), style: context.textTheme.bodyLarge),
+                SizedBox(height: 5.h),
+                _buildForgotPassword(),
+              ],
               SizedBox(height: defaultPadding.h / 2),
-              _buildDeleteAccountButton(context),
+              _buildDeleteAccountButton(context, profileCubit),
               SizedBox(height: defaultPadding.h),
               if (_usernameController.text != widget.profileModel.name)
                 _buildSaveButton(profileCubit),
@@ -101,6 +104,10 @@ class _EditProfileBottomSheetContentState extends State<EditProfileBottomSheetCo
         ),
       ),
     );
+  }
+
+  bool isNotSigninWithThirdParty(ProfileCubit profileCubit) {
+    return profileCubit.isSignInUsingApple == false && profileCubit.isSignInUsingGoogle == false;
   }
 
   Widget _buildUsernameField() {
@@ -172,19 +179,45 @@ class _EditProfileBottomSheetContentState extends State<EditProfileBottomSheetCo
     );
   }
 
-  Widget _buildDeleteAccountButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => _showDeleteAccountDialog(context),
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.transparent),
-        shape: WidgetStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        )),
-      ),
-      child: Text(
-        'deleteMyAccount'.tr(),
-        style: context.textTheme.bodyLarge?.copyWith(
-          color: AppColors.errorColor,
+  Widget _buildDeleteAccountButton(BuildContext context, ProfileCubit profileCubit) {
+    return BlocListener<ProfileCubit, ProfileState>(
+      listenWhen: (previous, current) =>
+          current is LoadingDeleteAccountState ||
+          current is SuccessDeleteAccountState ||
+          current is ErrorDeleteAccountState,
+      listener: (context, state) {
+        if (state is LoadingDeleteAccountState) {
+          context.showLoading();
+        } else if (state is SuccessDeleteAccountState) {
+          context.hideLoading();
+
+          HelperSharedPreferences.clear().whenComplete(() {
+            if (context.mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutesConstants.signUpView,
+                (route) => false,
+              );
+            }
+          });
+        } else if (state is ErrorDeleteAccountState) {
+          context.hideLoading();
+          CustomToast.showErrorToast(state.error);
+        }
+      },
+      child: ElevatedButton(
+        onPressed: () => _showDeleteAccountDialog(context, profileCubit),
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.r),
+          )),
+        ),
+        child: Text(
+          'deleteMyAccount'.tr(),
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: AppColors.errorColor,
+          ),
         ),
       ),
     );
@@ -208,7 +241,7 @@ class _EditProfileBottomSheetContentState extends State<EditProfileBottomSheetCo
     }
   }
 
-  void _showDeleteAccountDialog(BuildContext context) {
+  void _showDeleteAccountDialog(BuildContext context, ProfileCubit profileCubit) {
     showGeneralDialog(
       context: context,
       transitionDuration: const Duration(milliseconds: 300),
@@ -228,7 +261,11 @@ class _EditProfileBottomSheetContentState extends State<EditProfileBottomSheetCo
                 child: DeleteAccountDialog(
                   profileModel: widget.profileModel,
                   onConfirm: () {
-                    onConfirmDeleteAccountBottomSheet();
+                    if (profileCubit.isSignInUsingApple || profileCubit.isSignInUsingGoogle) {
+                      profileCubit.deleteMyAccount(imageUri: widget.profileModel.profileImage);
+                    } else {
+                      onConfirmDeleteAccountBottomSheet();
+                    }
                   },
                 ),
               ),

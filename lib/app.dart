@@ -20,7 +20,7 @@ class Issue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(428, 926),
+      designSize: context.isTablet ? const Size(481, 890) : const Size(428, 926),
       minTextAdapt: true,
       enableScaleText: () => false,
       splitScreenMode: true,
@@ -41,7 +41,7 @@ class Issue extends StatelessWidget {
               theme: lightTheme(),
               darkTheme: darkTheme(),
               locale: context.locale,
-              themeAnimationStyle: AnimationStyle(curve: Curves.fastOutSlowIn),
+              themeAnimationStyle:  AnimationStyle(curve: Curves.fastOutSlowIn),
               supportedLocales: context.supportedLocales,
               localizationsDelegates: context.localizationDelegates,
               navigatorKey: navigatorKey,
@@ -70,5 +70,31 @@ class Issue extends StatelessWidget {
   }
 }
 /* 
-2- // TODO========> When click to contact use button go to Apple Store if the mobile is iphone else open Google Play Store
+1. Purpose of the Application
+Meamar is a marketplace app specialized in construction tools. It connects two types of users:
+
+- Managers: Construction professionals who list tools for rent or sale.
+- Clients: Users who browse, search, and contact tool owners for their construction needs.
+Key Points:
+
+- The app is not for the general public; users must select their role (Manager/Client) during signup.
+- All tool listings and posts are user-generated and moderated for compliance.
+- There are no in-app payments; all transactions and communications happen externally (e.g., WhatsApp, phone, SMS).
+
+
+
+
+
+
+2. Core Features
+Authentication
+Users can sign up and log in using:
+Phone number
+Email and password
+Google Auth
+Apple Auth
+Account Types
+Manager: Can add, edit, and delete tools and posts.
+Client: Can browse tools and posts, like posts, and contact tool owners.
+
  */

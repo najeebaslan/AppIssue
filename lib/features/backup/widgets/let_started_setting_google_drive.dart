@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +29,7 @@ class _LetStartedSettingGoogleDriveState extends State<LetStartedSettingGoogleDr
     List<ListBackUpItems> listItems = [
       ListBackUpItems(
         title: 'backupSettings',
-        imageUri: ImagesConstants.googleDrive,
+        imageUri: Platform.isIOS ? ImagesConstants.backupManually : ImagesConstants.googleDrive,
       ),
       ListBackUpItems(
         title: 'createBackup',

@@ -151,7 +151,9 @@ class _ConfirmDeleteAccountBottomSheetState extends State<ConfirmDeleteAccountBo
                           borderRadius: BorderRadius.circular(30.r),
                         )),
                       ),
-                      onPressed: () => onConformDeleteAccount(context),
+                      onPressed: () {
+                        onConformDeleteAccount(context);
+                      },
                       child: Text(
                         'deleteMyAccount'.tr(),
                         style: context.textTheme.bodyLarge?.copyWith(

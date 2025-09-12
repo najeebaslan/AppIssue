@@ -33,14 +33,8 @@ class _NavigationBarViewState extends State<NavigationBarView> with TickerProvid
   final ValueNotifier<int> _selectedIndex = ValueNotifier(0);
 
   final List<Widget> _pages = [
-    BlocProvider<ProfileCubit>(
-      create: (context) => getIt<ProfileCubit>(),
-      child: const HomeView(),
-    ),
-    BlocProvider<FilterCubit>(
-      create: (context) => getIt<FilterCubit>(),
-      child: const FilterView(),
-    ),
+    BlocProvider<ProfileCubit>(create: (context) => getIt<ProfileCubit>(), child: const HomeView()),
+    BlocProvider<FilterCubit>(create: (context) => getIt<FilterCubit>(), child: const FilterView()),
     const AddAccusedView(),
     BlocProvider<ProfileCubit>(
       create: (context) => getIt<ProfileCubit>(),
@@ -60,6 +54,7 @@ class _NavigationBarViewState extends State<NavigationBarView> with TickerProvid
     final user = getIt<FirebaseAuth>().currentUser;
     if (user != null) {
       getIt<HelperTaskManager>().scheduleTasks(user.uid); // This for production
+
       // getIt<HelperTaskManager>().testScheduleTasks(); // This for testing
     }
   }
@@ -106,17 +101,13 @@ class _NavigationBarViewState extends State<NavigationBarView> with TickerProvid
             valueListenable: _selectedIndex,
             builder: (context, value, child) {
               return TabBar(
-                overlayColor: const WidgetStatePropertyAll(
-                  Colors.transparent,
-                ),
+                overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                 onTap: (index) {
                   _selectedIndex.value = index;
                   _tabController.index = index; // Update TabController's index
                 },
                 tabs: _buildTabs(value),
-                labelStyle: context.textTheme.bodyMedium?.copyWith(
-                  locale: context.locale,
-                ),
+                labelStyle: context.textTheme.bodyMedium?.copyWith(locale: context.locale),
                 labelColor: context.themeData.primaryColor,
                 unselectedLabelColor: Colors.grey[600],
                 unselectedLabelStyle: context.textTheme.bodyMedium?.copyWith(
@@ -155,8 +146,12 @@ class _NavigationBarViewState extends State<NavigationBarView> with TickerProvid
 
     return List<Widget>.generate(4, (index) {
       return Tab(
+        height: 72.0.w,
         iconMargin: EdgeInsets.zero,
-        icon: Icon(selectedIndex == index ? onSelectedIcons[index] : icons[index]),
+        icon: Icon(
+          selectedIndex == index ? onSelectedIcons[index] : icons[index],
+          size: defaultIconSize.w,
+        ),
         text: labels[index].tr(),
       );
     });

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,7 +101,7 @@ class BackupList extends StatelessWidget {
               );
         } else {
           context.awesomeDialog(
-            title: 'deleteBackup'.tr(),
+            title: Platform.isIOS ? 'deleteBackupIos'.tr() : 'deleteBackup'.tr(),
             context: context,
             dialogType: CustomDialogType.warning,
             color: AppColors.errorDeepColor,
@@ -107,7 +109,8 @@ class BackupList extends StatelessWidget {
                   backupID: backup.id.validate(),
                   listBackups: backups,
                 ),
-            description: 'deleteBackupDescription'.tr(),
+            description:
+                Platform.isIOS ? 'deleteBackupDescription'.tr() : 'deleteBackupDescription'.tr(),
           );
         }
       },
